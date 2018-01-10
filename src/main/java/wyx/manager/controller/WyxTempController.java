@@ -1,6 +1,6 @@
 package wyx.manager.controller;
-import wyx.manager.entity.WyxShareIconEntity;
-import wyx.manager.service.WyxShareIconServiceI;
+import wyx.manager.entity.WyxTempEntity;
+import wyx.manager.service.WyxTempServiceI;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.SimpleDateFormat;
@@ -67,22 +67,22 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**   
  * @Title: Controller  
- * @Description: 分享的图标
+ * @Description: 模板表
  * @author onlineGenerator
- * @date 2018-01-10 15:13:49
+ * @date 2018-01-10 15:12:21
  * @version V1.0   
  *
  */
 @Controller
-@RequestMapping("/wyxShareIconController")
-public class WyxShareIconController extends BaseController {
+@RequestMapping("/wyxTempController")
+public class WyxTempController extends BaseController {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(WyxShareIconController.class);
+	private static final Logger logger = Logger.getLogger(WyxTempController.class);
 
 	@Autowired
-	private WyxShareIconServiceI wyxShareIconService;
+	private WyxTempServiceI wyxTempService;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -91,13 +91,13 @@ public class WyxShareIconController extends BaseController {
 
 
 	/**
-	 * 分享的图标列表 页面跳转
+	 * 模板表列表 页面跳转
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "list")
 	public ModelAndView list(HttpServletRequest request) {
-		return new ModelAndView("wyx/manager/wyxShareIconList");
+		return new ModelAndView("wyx/manager/wyxTempList");
 	}
 
 	/**
@@ -109,38 +109,38 @@ public class WyxShareIconController extends BaseController {
 	 */
 
 	@RequestMapping(params = "datagrid")
-	public void datagrid(WyxShareIconEntity wyxShareIcon,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-		CriteriaQuery cq = new CriteriaQuery(WyxShareIconEntity.class, dataGrid);
+	public void datagrid(WyxTempEntity wyxTemp,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+		CriteriaQuery cq = new CriteriaQuery(WyxTempEntity.class, dataGrid);
 		//查询条件组装器
-		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxShareIcon, request.getParameterMap());
+		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxTemp, request.getParameterMap());
 		try{
 		//自定义追加查询条件
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
 		cq.add();
-		this.wyxShareIconService.getDataGridReturn(cq, true);
+		this.wyxTempService.getDataGridReturn(cq, true);
 		TagUtil.datagrid(response, dataGrid);
 	}
 	
 	/**
-	 * 删除分享的图标
+	 * 删除模板表
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "doDel")
 	@ResponseBody
-	public AjaxJson doDel(WyxShareIconEntity wyxShareIcon, HttpServletRequest request) {
+	public AjaxJson doDel(WyxTempEntity wyxTemp, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		wyxShareIcon = systemService.getEntity(WyxShareIconEntity.class, wyxShareIcon.getId());
-		message = "分享的图标删除成功";
+		wyxTemp = systemService.getEntity(WyxTempEntity.class, wyxTemp.getId());
+		message = "模板表删除成功";
 		try{
-			wyxShareIconService.delete(wyxShareIcon);
+			wyxTempService.delete(wyxTemp);
 			systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
 			e.printStackTrace();
-			message = "分享的图标删除失败";
+			message = "模板表删除失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -148,7 +148,7 @@ public class WyxShareIconController extends BaseController {
 	}
 	
 	/**
-	 * 批量删除分享的图标
+	 * 批量删除模板表
 	 * 
 	 * @return
 	 */
@@ -157,18 +157,18 @@ public class WyxShareIconController extends BaseController {
 	public AjaxJson doBatchDel(String ids,HttpServletRequest request){
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "分享的图标删除成功";
+		message = "模板表删除成功";
 		try{
 			for(String id:ids.split(",")){
-				WyxShareIconEntity wyxShareIcon = systemService.getEntity(WyxShareIconEntity.class, 
+				WyxTempEntity wyxTemp = systemService.getEntity(WyxTempEntity.class, 
 				Integer.parseInt(id)
 				);
-				wyxShareIconService.delete(wyxShareIcon);
+				wyxTempService.delete(wyxTemp);
 				systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			message = "分享的图标删除失败";
+			message = "模板表删除失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -177,22 +177,22 @@ public class WyxShareIconController extends BaseController {
 
 
 	/**
-	 * 添加分享的图标
+	 * 添加模板表
 	 *
 	 * @return
 	 */
 	@RequestMapping(params = "doAdd")
 	@ResponseBody
-	public AjaxJson doAdd(WyxShareIconEntity wyxShareIcon, HttpServletRequest request) {
+	public AjaxJson doAdd(WyxTempEntity wyxTemp, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "分享的图标添加成功";
+		message = "模板表添加成功";
 		try{
-			wyxShareIconService.save(wyxShareIcon);
+			wyxTempService.save(wyxTemp);
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
 			e.printStackTrace();
-			message = "分享的图标添加失败";
+			message = "模板表添加失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -200,24 +200,24 @@ public class WyxShareIconController extends BaseController {
 	}
 	
 	/**
-	 * 更新分享的图标
+	 * 更新模板表
 	 *
 	 * @return
 	 */
 	@RequestMapping(params = "doUpdate")
 	@ResponseBody
-	public AjaxJson doUpdate(WyxShareIconEntity wyxShareIcon, HttpServletRequest request) {
+	public AjaxJson doUpdate(WyxTempEntity wyxTemp, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "分享的图标更新成功";
-		WyxShareIconEntity t = wyxShareIconService.get(WyxShareIconEntity.class, wyxShareIcon.getId());
+		message = "模板表更新成功";
+		WyxTempEntity t = wyxTempService.get(WyxTempEntity.class, wyxTemp.getId());
 		try {
-			MyBeanUtils.copyBeanNotNull2Bean(wyxShareIcon, t);
-			wyxShareIconService.saveOrUpdate(t);
+			MyBeanUtils.copyBeanNotNull2Bean(wyxTemp, t);
+			wyxTempService.saveOrUpdate(t);
 			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 		} catch (Exception e) {
 			e.printStackTrace();
-			message = "分享的图标更新失败";
+			message = "模板表更新失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -226,30 +226,30 @@ public class WyxShareIconController extends BaseController {
 	
 
 	/**
-	 * 分享的图标新增页面跳转
+	 * 模板表新增页面跳转
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "goAdd")
-	public ModelAndView goAdd(WyxShareIconEntity wyxShareIcon, HttpServletRequest req) {
-		if (StringUtil.isNotEmpty(wyxShareIcon.getId())) {
-			wyxShareIcon = wyxShareIconService.getEntity(WyxShareIconEntity.class, wyxShareIcon.getId());
-			req.setAttribute("wyxShareIconPage", wyxShareIcon);
+	public ModelAndView goAdd(WyxTempEntity wyxTemp, HttpServletRequest req) {
+		if (StringUtil.isNotEmpty(wyxTemp.getId())) {
+			wyxTemp = wyxTempService.getEntity(WyxTempEntity.class, wyxTemp.getId());
+			req.setAttribute("wyxTempPage", wyxTemp);
 		}
-		return new ModelAndView("wyx/manager/wyxShareIcon-add");
+		return new ModelAndView("wyx/manager/wyxTemp-add");
 	}
 	/**
-	 * 分享的图标编辑页面跳转
+	 * 模板表编辑页面跳转
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "goUpdate")
-	public ModelAndView goUpdate(WyxShareIconEntity wyxShareIcon, HttpServletRequest req) {
-		if (StringUtil.isNotEmpty(wyxShareIcon.getId())) {
-			wyxShareIcon = wyxShareIconService.getEntity(WyxShareIconEntity.class, wyxShareIcon.getId());
-			req.setAttribute("wyxShareIconPage", wyxShareIcon);
+	public ModelAndView goUpdate(WyxTempEntity wyxTemp, HttpServletRequest req) {
+		if (StringUtil.isNotEmpty(wyxTemp.getId())) {
+			wyxTemp = wyxTempService.getEntity(WyxTempEntity.class, wyxTemp.getId());
+			req.setAttribute("wyxTempPage", wyxTemp);
 		}
-		return new ModelAndView("wyx/manager/wyxShareIcon-update");
+		return new ModelAndView("wyx/manager/wyxTemp-update");
 	}
 	
 	/**
@@ -259,7 +259,7 @@ public class WyxShareIconController extends BaseController {
 	 */
 	@RequestMapping(params = "upload")
 	public ModelAndView upload(HttpServletRequest req) {
-		req.setAttribute("controller_name","wyxShareIconController");
+		req.setAttribute("controller_name","wyxTempController");
 		return new ModelAndView("common/upload/pub_excel_upload");
 	}
 	
@@ -270,16 +270,16 @@ public class WyxShareIconController extends BaseController {
 	 * @param response
 	 */
 	@RequestMapping(params = "exportXls")
-	public String exportXls(WyxShareIconEntity wyxShareIcon,HttpServletRequest request,HttpServletResponse response
+	public String exportXls(WyxTempEntity wyxTemp,HttpServletRequest request,HttpServletResponse response
 			, DataGrid dataGrid,ModelMap modelMap) {
-		CriteriaQuery cq = new CriteriaQuery(WyxShareIconEntity.class, dataGrid);
-		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxShareIcon, request.getParameterMap());
-		List<WyxShareIconEntity> wyxShareIcons = this.wyxShareIconService.getListByCriteriaQuery(cq,false);
-		modelMap.put(NormalExcelConstants.FILE_NAME,"分享的图标");
-		modelMap.put(NormalExcelConstants.CLASS,WyxShareIconEntity.class);
-		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("分享的图标列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
+		CriteriaQuery cq = new CriteriaQuery(WyxTempEntity.class, dataGrid);
+		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxTemp, request.getParameterMap());
+		List<WyxTempEntity> wyxTemps = this.wyxTempService.getListByCriteriaQuery(cq,false);
+		modelMap.put(NormalExcelConstants.FILE_NAME,"模板表");
+		modelMap.put(NormalExcelConstants.CLASS,WyxTempEntity.class);
+		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("模板表列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
 			"导出信息"));
-		modelMap.put(NormalExcelConstants.DATA_LIST,wyxShareIcons);
+		modelMap.put(NormalExcelConstants.DATA_LIST,wyxTemps);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
 	/**
@@ -289,11 +289,11 @@ public class WyxShareIconController extends BaseController {
 	 * @param response
 	 */
 	@RequestMapping(params = "exportXlsByT")
-	public String exportXlsByT(WyxShareIconEntity wyxShareIcon,HttpServletRequest request,HttpServletResponse response
+	public String exportXlsByT(WyxTempEntity wyxTemp,HttpServletRequest request,HttpServletResponse response
 			, DataGrid dataGrid,ModelMap modelMap) {
-    	modelMap.put(NormalExcelConstants.FILE_NAME,"分享的图标");
-    	modelMap.put(NormalExcelConstants.CLASS,WyxShareIconEntity.class);
-    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("分享的图标列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
+    	modelMap.put(NormalExcelConstants.FILE_NAME,"模板表");
+    	modelMap.put(NormalExcelConstants.CLASS,WyxTempEntity.class);
+    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("模板表列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
     	"导出信息"));
     	modelMap.put(NormalExcelConstants.DATA_LIST,new ArrayList());
     	return NormalExcelConstants.JEECG_EXCEL_VIEW;
@@ -314,9 +314,9 @@ public class WyxShareIconController extends BaseController {
 			params.setHeadRows(1);
 			params.setNeedSave(true);
 			try {
-				List<WyxShareIconEntity> listWyxShareIconEntitys = ExcelImportUtil.importExcel(file.getInputStream(),WyxShareIconEntity.class,params);
-				for (WyxShareIconEntity wyxShareIcon : listWyxShareIconEntitys) {
-					wyxShareIconService.save(wyxShareIcon);
+				List<WyxTempEntity> listWyxTempEntitys = ExcelImportUtil.importExcel(file.getInputStream(),WyxTempEntity.class,params);
+				for (WyxTempEntity wyxTemp : listWyxTempEntitys) {
+					wyxTempService.save(wyxTemp);
 				}
 				j.setMsg("文件导入成功！");
 			} catch (Exception e) {
@@ -335,15 +335,15 @@ public class WyxShareIconController extends BaseController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
-	public List<WyxShareIconEntity> list() {
-		List<WyxShareIconEntity> listWyxShareIcons=wyxShareIconService.getList(WyxShareIconEntity.class);
-		return listWyxShareIcons;
+	public List<WyxTempEntity> list() {
+		List<WyxTempEntity> listWyxTemps=wyxTempService.getList(WyxTempEntity.class);
+		return listWyxTemps;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> get(@PathVariable("id") String id) {
-		WyxShareIconEntity task = wyxShareIconService.get(WyxShareIconEntity.class, id);
+		WyxTempEntity task = wyxTempService.get(WyxTempEntity.class, id);
 		if (task == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
@@ -352,23 +352,23 @@ public class WyxShareIconController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> create(@RequestBody WyxShareIconEntity wyxShareIcon, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> create(@RequestBody WyxTempEntity wyxTemp, UriComponentsBuilder uriBuilder) {
 		//调用JSR303 Bean Validator进行校验，如果出错返回含400错误码及json格式的错误信息.
-		Set<ConstraintViolation<WyxShareIconEntity>> failures = validator.validate(wyxShareIcon);
+		Set<ConstraintViolation<WyxTempEntity>> failures = validator.validate(wyxTemp);
 		if (!failures.isEmpty()) {
 			return new ResponseEntity(BeanValidators.extractPropertyAndMessage(failures), HttpStatus.BAD_REQUEST);
 		}
 
 		//保存
 		try{
-			wyxShareIconService.save(wyxShareIcon);
+			wyxTempService.save(wyxTemp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		//按照Restful风格约定，创建指向新任务的url, 也可以直接返回id或对象.
-		Integer id = wyxShareIcon.getId();
-		URI uri = uriBuilder.path("/rest/wyxShareIconController/" + id).build().toUri();
+		Integer id = wyxTemp.getId();
+		URI uri = uriBuilder.path("/rest/wyxTempController/" + id).build().toUri();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(uri);
 
@@ -376,16 +376,16 @@ public class WyxShareIconController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> update(@RequestBody WyxShareIconEntity wyxShareIcon) {
+	public ResponseEntity<?> update(@RequestBody WyxTempEntity wyxTemp) {
 		//调用JSR303 Bean Validator进行校验，如果出错返回含400错误码及json格式的错误信息.
-		Set<ConstraintViolation<WyxShareIconEntity>> failures = validator.validate(wyxShareIcon);
+		Set<ConstraintViolation<WyxTempEntity>> failures = validator.validate(wyxTemp);
 		if (!failures.isEmpty()) {
 			return new ResponseEntity(BeanValidators.extractPropertyAndMessage(failures), HttpStatus.BAD_REQUEST);
 		}
 
 		//保存
 		try{
-			wyxShareIconService.saveOrUpdate(wyxShareIcon);
+			wyxTempService.saveOrUpdate(wyxTemp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -398,6 +398,6 @@ public class WyxShareIconController extends BaseController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") String id) {
-		wyxShareIconService.deleteEntityById(WyxShareIconEntity.class, id);
+		wyxTempService.deleteEntityById(WyxTempEntity.class, id);
 	}
 }

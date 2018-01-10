@@ -22,7 +22,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
  * @Title: Entity
  * @Description: 分享类型
  * @author onlineGenerator
- * @date 2018-01-08 15:41:02
+ * @date 2018-01-10 15:13:08
  * @version V1.0   
  *
  */
@@ -31,12 +31,19 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @SuppressWarnings("serial")
 public class WyxShareTypeEntity implements java.io.Serializable {
 	/**主键*/
+
 	private Integer id;
 	/**名称*/
-	@Excel(name="名称",width=15)
+    @Excel(name="名称",width=15)
+		
 	private String stName;
+	/**1.icon 2.temp*/
+    @Excel(name="1.icon 2.temp",width=15)
+		
+	private String stType;
 	/**是否删除*/
-	@Excel(name="是否删除",width=15)
+    @Excel(name="是否删除",width=15,dicCode="yesorno")
+		
 	private Integer stDelete;
 	
 	/**
@@ -45,7 +52,6 @@ public class WyxShareTypeEntity implements java.io.Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	@Column(name ="ID",nullable=false,length=20)
 	public Integer getId(){
 		return this.id;
@@ -62,7 +68,6 @@ public class WyxShareTypeEntity implements java.io.Serializable {
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  名称
 	 */
-
 	@Column(name ="ST_NAME",nullable=true,length=32)
 	public String getStName(){
 		return this.stName;
@@ -76,10 +81,25 @@ public class WyxShareTypeEntity implements java.io.Serializable {
 		this.stName = stName;
 	}
 	/**
+	 *方法: 取得java.lang.String
+	 *@return: java.lang.String  1.icon 2.temp
+	 */
+	@Column(name ="ST_TYPE",nullable=true,length=32)
+	public String getStType(){
+		return this.stType;
+	}
+
+	/**
+	 *方法: 设置java.lang.String
+	 *@param: java.lang.String  1.icon 2.temp
+	 */
+	public void setStType(String stType){
+		this.stType = stType;
+	}
+	/**
 	 *方法: 取得java.lang.Integer
 	 *@return: java.lang.Integer  是否删除
 	 */
-
 	@Column(name ="ST_DELETE",nullable=true,length=20)
 	public Integer getStDelete(){
 		return this.stDelete;

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>分享的图标</title>
+  <title>点击统计</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="online/template/ledefault/css/vendor.css">
@@ -38,61 +38,61 @@
 </head>
 
  <body>
-	<t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="wyxShareIconController.do?doAdd" tiptype="1" >
+	<t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="wyxStatisticalController.do?doAdd" tiptype="1" >
 			<input type="hidden" id="btn_sub" class="btn_sub"/>
 			<input type="hidden" id="id" name="id"/>
 			<div class="tab-wrapper">
 			    <!-- tab -->
 			    <ul class="nav nav-tabs">
-			      <li role="presentation" class="active"><a href="javascript:void(0);">分享的图标</a></li>
+			      <li role="presentation" class="active"><a href="javascript:void(0);">点击统计</a></li>
 			    </ul>
 			    <!-- tab内容 -->
 			    <div class="con-wrapper" id="con-wrapper1" style="display: block;">
 			      <div class="row form-wrapper">
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>排序：</b>
+			          	<b>分享表主键：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<input id="siOrder" name="siOrder" type="text" class="form-control"  datatype="n"  ignore="ignore" />
+								<input id="sid" name="sid" type="text" class="form-control"  datatype="n"  ignore="ignore" />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">排序</label>
+						<label class="Validform_label" style="display: none">分享表主键</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>所在分类：</b>
+			          	<b>查看次数：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<t:dictSelect field="siType" type="list" extendJson="{class:'form-control'}"  datatype="*"   dictTable="wyx_share_type" dictField="id" dictText="st_name"  hasLabel="false"  title="所在分类"></t:dictSelect>     
+								<input id="sSee" name="sSee" type="text" class="form-control"  datatype="n"  ignore="ignore" />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">所在分类</label>
+						<label class="Validform_label" style="display: none">查看次数</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>图标路径：</b>
+			          	<b>点击次数：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<input id="siSrc" name="siSrc" type="text" class="form-control"  ignore="ignore" />
+								<input id="sClick" name="sClick" type="text" class="form-control"  datatype="n"  ignore="ignore" />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">图标路径</label>
+						<label class="Validform_label" style="display: none">点击次数</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>是否删除：</b>
+			          	<b>分享次数：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<t:dictSelect field="siDelete" type="radio" extendJson="{class:'form-control'}"  datatype="*"   typeGroupCode="yesorno"  hasLabel="false"  title="是否删除"></t:dictSelect>     
+								<input id="sShare" name="sShare" type="text" class="form-control"  datatype="n"  ignore="ignore" />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">是否删除</label>
+						<label class="Validform_label" style="display: none">分享次数</label>
 			          </div>
 						</div>
 			          
@@ -137,5 +137,5 @@
 
 </script>
  </body>
-<script src = "webpage/wyx/manager/wyxShareIcon.js"></script>		
+<script src = "webpage/wyx/manager/wyxStatistical.js"></script>		
 </html>

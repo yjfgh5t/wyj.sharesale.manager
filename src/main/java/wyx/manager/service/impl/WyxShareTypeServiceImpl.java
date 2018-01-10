@@ -78,6 +78,7 @@ public class WyxShareTypeServiceImpl extends CommonServiceImpl implements WyxSha
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", t.getId());
 		map.put("st_name", t.getStName());
+		map.put("st_type", t.getStType());
 		map.put("st_delete", t.getStDelete());
 		return map;
 	}
@@ -91,6 +92,7 @@ public class WyxShareTypeServiceImpl extends CommonServiceImpl implements WyxSha
  	public String replaceVal(String sql,WyxShareTypeEntity t){
  		sql  = sql.replace("#{id}",String.valueOf(t.getId()));
  		sql  = sql.replace("#{st_name}",String.valueOf(t.getStName()));
+ 		sql  = sql.replace("#{st_type}",String.valueOf(t.getStType()));
  		sql  = sql.replace("#{st_delete}",String.valueOf(t.getStDelete()));
  		sql  = sql.replace("#{UUID}",UUID.randomUUID().toString());
  		return sql;

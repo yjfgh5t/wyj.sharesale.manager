@@ -6,7 +6,8 @@
   <t:datagrid name="wyxShareTypeList" checkbox="false" pagination="true" fitColumns="true" title="分享类型" actionUrl="wyxShareTypeController.do?datagrid" idField="id" fit="true" queryMode="group">
    <t:dgCol title="主键"  field="id"  hidden="true"  queryMode="single"  width="120"></t:dgCol>
    <t:dgCol title="名称"  field="stName"  queryMode="single"  width="120"></t:dgCol>
-   <t:dgCol title="是否删除"  field="stDelete"  queryMode="single"  width="120"></t:dgCol>
+   <t:dgCol title="1.icon 2.temp"  field="stType"  queryMode="single"  width="120"></t:dgCol>
+   <t:dgCol title="是否删除"  field="stDelete"  hidden="true"  queryMode="single"  dictionary="yesorno"  width="120"></t:dgCol>
    <t:dgCol title="操作" field="opt" width="100"></t:dgCol>
    <t:dgDelOpt title="删除" url="wyxShareTypeController.do?doDel&id={id}" urlclass="ace_button"  urlfont="fa-trash-o"/>
    <t:dgToolBar title="录入" icon="icon-add" url="wyxShareTypeController.do?goAdd" funname="add"></t:dgToolBar>

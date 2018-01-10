@@ -5,10 +5,10 @@
   <div region="center" style="padding:0px;border:0px">
   <t:datagrid name="wyxShareIconList" checkbox="false" pagination="true" fitColumns="true" title="分享的图标" actionUrl="wyxShareIconController.do?datagrid" idField="id" fit="true" queryMode="group">
    <t:dgCol title="主键"  field="id"  hidden="true"  queryMode="single"  width="120"></t:dgCol>
-   <t:dgCol title="图标路径"  field="siSrc"  queryMode="single"  width="120"></t:dgCol>
    <t:dgCol title="排序"  field="siOrder"  queryMode="single"  width="120"></t:dgCol>
    <t:dgCol title="所在分类"  field="siType"  queryMode="single"  dictionary="wyx_share_type,id,st_name"  width="120"></t:dgCol>
-   <t:dgCol title="是否删除"  field="siDelete"  queryMode="single"  dictionary="yesorno"  width="120"></t:dgCol>
+   <t:dgCol title="图标路径"  field="siSrc"  queryMode="single"  width="120"></t:dgCol>
+   <t:dgCol title="是否删除"  field="siDelete"  hidden="true"  queryMode="single"  dictionary="yesorno"  width="120"></t:dgCol>
    <t:dgCol title="操作" field="opt" width="100"></t:dgCol>
    <t:dgDelOpt title="删除" url="wyxShareIconController.do?doDel&id={id}" urlclass="ace_button"  urlfont="fa-trash-o"/>
    <t:dgToolBar title="录入" icon="icon-add" url="wyxShareIconController.do?goAdd" funname="add"></t:dgToolBar>
