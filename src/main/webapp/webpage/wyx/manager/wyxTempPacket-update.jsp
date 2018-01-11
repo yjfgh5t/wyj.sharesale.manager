@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>分享的图标</title>
+  <title>红包模板</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="online/template/ledefault/css/vendor.css">
@@ -31,56 +31,57 @@
   <script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
   <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.config.js"></script>
   <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.all.min.js"></script>
-								
    <script type="text/javascript">
   //编写自定义JS代码
   </script>
 </head>
 
  <body>
-	<t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="wyxShareIconController.do?doAdd" tiptype="1" >
+	<t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="wyxTempPacketController.do?doUpdate" tiptype="1" >
 			<input type="hidden" id="btn_sub" class="btn_sub"/>
-			<input type="hidden" id="id" name="id"/>
+			<input type="hidden" name="id" value='${wyxTempPacketPage.id}' >
+			
+			
 			<div class="tab-wrapper">
 			    <!-- tab -->
 			    <ul class="nav nav-tabs">
-			      <li role="presentation" class="active"><a href="javascript:void(0);">分享的图标</a></li>
+			      <li role="presentation" class="active"><a href="javascript:void(0);">红包模板</a></li>
 			    </ul>
 			    <!-- tab内容 -->
 			    <div class="con-wrapper" id="con-wrapper1" style="display: block;">
 			      <div class="row form-wrapper">
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>排序：</b>
+			          	<b>口令：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<input id="siOrder" name="siOrder" type="text" class="form-control"  datatype="n"  ignore="ignore" />
+								<input id="tpToken" name="tpToken" type="text" class="form-control" ignore="ignore"  value='${wyxTempPacketPage.tpToken}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">排序</label>
+						<label class="Validform_label" style="display: none">口令</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>所在分类：</b>
+			          	<b>复制口令后文案：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<t:dictSelect field="siType" type="list" extendJson="{class:'form-control'}"  datatype="*"   dictTable="wyx_share_type" dictField="id" dictText="st_name"  hasLabel="false"  title="所在分类"></t:dictSelect>     
+								<input id="tpCopyMsg" name="tpCopyMsg" type="text" class="form-control" ignore="ignore"  value='${wyxTempPacketPage.tpCopyMsg}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">所在分类</label>
+						<label class="Validform_label" style="display: none">复制口令后文案</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>图标路径：</b>
+			          	<b>提示分享文案：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<input id="siSrc" name="siSrc" type="text" class="form-control"  ignore="ignore" />
+								<input id="tpShareMsg" name="tpShareMsg" type="text" class="form-control" ignore="ignore"  value='${wyxTempPacketPage.tpShareMsg}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">图标路径</label>
+						<label class="Validform_label" style="display: none">提示分享文案</label>
 			          </div>
 						</div>
 			          
@@ -90,15 +91,13 @@
 			          	<b>是否删除：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<t:dictSelect field="siDelete" type="radio" extendJson="{class:'form-control'}"  datatype="*"   typeGroupCode="yesorno"  hasLabel="false"  title="是否删除"></t:dictSelect>     
+								<input id="tpDelete" name="tpDelete" type="text" class="form-control" datatype="n"  ignore="ignore"  value='${wyxTempPacketPage.tpDelete}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
 						<label class="Validform_label" style="display: none">是否删除</label>
 			          </div>
 						</div>
 			          
 			        
-			        
-			       
 			          <div class="row" id = "sub_tr" style="display: none;">
 				        <div class="col-xs-12 layout-header">
 				          <div class="col-xs-6"></div>
@@ -137,5 +136,5 @@
 
 </script>
  </body>
-<script src = "webpage/wyx/manager/wyxShareIcon.js"></script>		
+<script src = "webpage/wyx/manager/wyxTempPacket.js"></script>		
 </html>

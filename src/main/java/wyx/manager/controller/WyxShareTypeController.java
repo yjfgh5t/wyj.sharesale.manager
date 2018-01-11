@@ -69,7 +69,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @Title: Controller  
  * @Description: 分享类型
  * @author onlineGenerator
- * @date 2018-01-08 15:41:02
+ * @date 2018-01-10 15:13:08
  * @version V1.0   
  *
  */
@@ -388,6 +388,7 @@ public class WyxShareTypeController extends BaseController {
 			e.printStackTrace();
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
+
 		//按Restful约定，返回204状态码, 无内容. 也可以返回200状态码.
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}

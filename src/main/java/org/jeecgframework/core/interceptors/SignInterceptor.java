@@ -26,7 +26,8 @@ public class SignInterceptor implements HandlerInterceptor {
             String sign= request.getHeader("X-JEECG-SIGN");
             String body=request.getParameter("body");
             if (StringUtil.isEmpty(sign)) {
-                throw new BusinessException("sign不能为空");
+                return true;
+                //throw new BusinessException("sign不能为空");
             }
             if (StringUtil.isEmpty(body)){
                 throw new BusinessException("body不能为空");
@@ -39,6 +40,7 @@ public class SignInterceptor implements HandlerInterceptor {
         } catch (BusinessException e) {
             j.put("success","false");
             j.put("msg",e.getMessage());
+            response.setHeader("Content-Type", "text/json;charset=UTF-8");
             response.getWriter().print(j.toJSONString());
             return false;
 

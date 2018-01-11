@@ -1,7 +1,7 @@
 package wyx.manager.service.impl;
-import wyx.manager.service.WyxShareIconServiceI;
+import wyx.manager.service.WyxStatisticalServiceI;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
-import wyx.manager.entity.WyxShareIconEntity;
+import wyx.manager.entity.WyxStatisticalEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
@@ -13,25 +13,25 @@ import org.jeecgframework.core.util.MyClassLoader;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
 
-@Service("wyxShareIconService")
+@Service("wyxStatisticalService")
 @Transactional
-public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxShareIconServiceI {
+public class WyxStatisticalServiceImpl extends CommonServiceImpl implements WyxStatisticalServiceI {
 
 	
- 	public void delete(WyxShareIconEntity entity) throws Exception{
+ 	public void delete(WyxStatisticalEntity entity) throws Exception{
  		super.delete(entity);
  		//执行删除操作增强业务
 		this.doDelBus(entity);
  	}
  	
- 	public Serializable save(WyxShareIconEntity entity) throws Exception{
+ 	public Serializable save(WyxStatisticalEntity entity) throws Exception{
  		Serializable t = super.save(entity);
  		//执行新增操作增强业务
  		this.doAddBus(entity);
  		return t;
  	}
  	
- 	public void saveOrUpdate(WyxShareIconEntity entity) throws Exception{
+ 	public void saveOrUpdate(WyxStatisticalEntity entity) throws Exception{
  		super.saveOrUpdate(entity);
  		//执行更新操作增强业务
  		this.doUpdateBus(entity);
@@ -42,7 +42,7 @@ public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxSha
 	 * @param t
 	 * @return
 	 */
-	private void doAddBus(WyxShareIconEntity t) throws Exception{
+	private void doAddBus(WyxStatisticalEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
 	 	
@@ -54,7 +54,7 @@ public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxSha
 	 * @param t
 	 * @return
 	 */
-	private void doUpdateBus(WyxShareIconEntity t) throws Exception{
+	private void doUpdateBus(WyxStatisticalEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
 	 	
@@ -66,7 +66,7 @@ public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxSha
 	 * @param id
 	 * @return
 	 */
-	private void doDelBus(WyxShareIconEntity t) throws Exception{
+	private void doDelBus(WyxStatisticalEntity t) throws Exception{
 	    //-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
 	 	
@@ -74,13 +74,14 @@ public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxSha
 	 	//-----------------java增强 end-----------------------------
  	}
  	
- 	private Map<String,Object> populationMap(WyxShareIconEntity t){
+ 	private Map<String,Object> populationMap(WyxStatisticalEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", t.getId());
-		map.put("si_order", t.getSiOrder());
-		map.put("si_type", t.getSiType());
-		map.put("si_src", t.getSiSrc());
-		map.put("si_delete", t.getSiDelete());
+		map.put("sid", t.getSid());
+		map.put("s_see", t.getSSee());
+		map.put("s_click", t.getSClick());
+		map.put("s_share", t.getSShare());
+		map.put("create_date", t.getCreateDate());
 		return map;
 	}
  	
@@ -90,12 +91,13 @@ public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxSha
 	 * @param t
 	 * @return
 	 */
- 	public String replaceVal(String sql,WyxShareIconEntity t){
+ 	public String replaceVal(String sql,WyxStatisticalEntity t){
  		sql  = sql.replace("#{id}",String.valueOf(t.getId()));
- 		sql  = sql.replace("#{si_order}",String.valueOf(t.getSiOrder()));
- 		sql  = sql.replace("#{si_type}",String.valueOf(t.getSiType()));
- 		sql  = sql.replace("#{si_src}",String.valueOf(t.getSiSrc()));
- 		sql  = sql.replace("#{si_delete}",String.valueOf(t.getSiDelete()));
+ 		sql  = sql.replace("#{sid}",String.valueOf(t.getSid()));
+ 		sql  = sql.replace("#{s_see}",String.valueOf(t.getSSee()));
+ 		sql  = sql.replace("#{s_click}",String.valueOf(t.getSClick()));
+ 		sql  = sql.replace("#{s_share}",String.valueOf(t.getSShare()));
+ 		sql  = sql.replace("#{create_date}",String.valueOf(t.getCreateDate()));
  		sql  = sql.replace("#{UUID}",UUID.randomUUID().toString());
  		return sql;
  	}
@@ -115,7 +117,7 @@ public class WyxShareIconServiceImpl extends CommonServiceImpl implements WyxSha
 				}
 				if(obj instanceof CgformEnhanceJavaInter){
 					CgformEnhanceJavaInter javaInter = (CgformEnhanceJavaInter) obj;
-					javaInter.execute("wyx_share_icon",data);
+					javaInter.execute("wyx_statistical",data);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

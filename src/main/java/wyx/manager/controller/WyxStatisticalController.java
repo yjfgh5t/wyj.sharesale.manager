@@ -1,6 +1,6 @@
 package wyx.manager.controller;
-import wyx.manager.entity.WyxShareIconEntity;
-import wyx.manager.service.WyxShareIconServiceI;
+import wyx.manager.entity.WyxStatisticalEntity;
+import wyx.manager.service.WyxStatisticalServiceI;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.SimpleDateFormat;
@@ -67,22 +67,22 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**   
  * @Title: Controller  
- * @Description: 分享的图标
+ * @Description: 点击统计
  * @author onlineGenerator
- * @date 2018-01-10 15:13:49
+ * @date 2018-01-10 15:10:09
  * @version V1.0   
  *
  */
 @Controller
-@RequestMapping("/wyxShareIconController")
-public class WyxShareIconController extends BaseController {
+@RequestMapping("/wyxStatisticalController")
+public class WyxStatisticalController extends BaseController {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(WyxShareIconController.class);
+	private static final Logger logger = Logger.getLogger(WyxStatisticalController.class);
 
 	@Autowired
-	private WyxShareIconServiceI wyxShareIconService;
+	private WyxStatisticalServiceI wyxStatisticalService;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -91,13 +91,13 @@ public class WyxShareIconController extends BaseController {
 
 
 	/**
-	 * 分享的图标列表 页面跳转
+	 * 点击统计列表 页面跳转
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "list")
 	public ModelAndView list(HttpServletRequest request) {
-		return new ModelAndView("wyx/manager/wyxShareIconList");
+		return new ModelAndView("wyx/manager/wyxStatisticalList");
 	}
 
 	/**
@@ -106,41 +106,42 @@ public class WyxShareIconController extends BaseController {
 	 * @param request
 	 * @param response
 	 * @param dataGrid
+	 * @param user
 	 */
 
 	@RequestMapping(params = "datagrid")
-	public void datagrid(WyxShareIconEntity wyxShareIcon,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-		CriteriaQuery cq = new CriteriaQuery(WyxShareIconEntity.class, dataGrid);
+	public void datagrid(WyxStatisticalEntity wyxStatistical,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+		CriteriaQuery cq = new CriteriaQuery(WyxStatisticalEntity.class, dataGrid);
 		//查询条件组装器
-		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxShareIcon, request.getParameterMap());
+		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxStatistical, request.getParameterMap());
 		try{
 		//自定义追加查询条件
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
 		cq.add();
-		this.wyxShareIconService.getDataGridReturn(cq, true);
+		this.wyxStatisticalService.getDataGridReturn(cq, true);
 		TagUtil.datagrid(response, dataGrid);
 	}
 	
 	/**
-	 * 删除分享的图标
+	 * 删除点击统计
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "doDel")
 	@ResponseBody
-	public AjaxJson doDel(WyxShareIconEntity wyxShareIcon, HttpServletRequest request) {
+	public AjaxJson doDel(WyxStatisticalEntity wyxStatistical, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		wyxShareIcon = systemService.getEntity(WyxShareIconEntity.class, wyxShareIcon.getId());
-		message = "分享的图标删除成功";
+		wyxStatistical = systemService.getEntity(WyxStatisticalEntity.class, wyxStatistical.getId());
+		message = "点击统计删除成功";
 		try{
-			wyxShareIconService.delete(wyxShareIcon);
+			wyxStatisticalService.delete(wyxStatistical);
 			systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
 			e.printStackTrace();
-			message = "分享的图标删除失败";
+			message = "点击统计删除失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -148,7 +149,7 @@ public class WyxShareIconController extends BaseController {
 	}
 	
 	/**
-	 * 批量删除分享的图标
+	 * 批量删除点击统计
 	 * 
 	 * @return
 	 */
@@ -157,18 +158,18 @@ public class WyxShareIconController extends BaseController {
 	public AjaxJson doBatchDel(String ids,HttpServletRequest request){
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "分享的图标删除成功";
+		message = "点击统计删除成功";
 		try{
 			for(String id:ids.split(",")){
-				WyxShareIconEntity wyxShareIcon = systemService.getEntity(WyxShareIconEntity.class, 
+				WyxStatisticalEntity wyxStatistical = systemService.getEntity(WyxStatisticalEntity.class, 
 				Integer.parseInt(id)
 				);
-				wyxShareIconService.delete(wyxShareIcon);
+				wyxStatisticalService.delete(wyxStatistical);
 				systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			message = "分享的图标删除失败";
+			message = "点击统计删除失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -177,22 +178,23 @@ public class WyxShareIconController extends BaseController {
 
 
 	/**
-	 * 添加分享的图标
-	 *
+	 * 添加点击统计
+	 * 
+	 * @param ids
 	 * @return
 	 */
 	@RequestMapping(params = "doAdd")
 	@ResponseBody
-	public AjaxJson doAdd(WyxShareIconEntity wyxShareIcon, HttpServletRequest request) {
+	public AjaxJson doAdd(WyxStatisticalEntity wyxStatistical, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "分享的图标添加成功";
+		message = "点击统计添加成功";
 		try{
-			wyxShareIconService.save(wyxShareIcon);
+			wyxStatisticalService.save(wyxStatistical);
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
 			e.printStackTrace();
-			message = "分享的图标添加失败";
+			message = "点击统计添加失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -200,24 +202,25 @@ public class WyxShareIconController extends BaseController {
 	}
 	
 	/**
-	 * 更新分享的图标
-	 *
+	 * 更新点击统计
+	 * 
+	 * @param ids
 	 * @return
 	 */
 	@RequestMapping(params = "doUpdate")
 	@ResponseBody
-	public AjaxJson doUpdate(WyxShareIconEntity wyxShareIcon, HttpServletRequest request) {
+	public AjaxJson doUpdate(WyxStatisticalEntity wyxStatistical, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "分享的图标更新成功";
-		WyxShareIconEntity t = wyxShareIconService.get(WyxShareIconEntity.class, wyxShareIcon.getId());
+		message = "点击统计更新成功";
+		WyxStatisticalEntity t = wyxStatisticalService.get(WyxStatisticalEntity.class, wyxStatistical.getId());
 		try {
-			MyBeanUtils.copyBeanNotNull2Bean(wyxShareIcon, t);
-			wyxShareIconService.saveOrUpdate(t);
+			MyBeanUtils.copyBeanNotNull2Bean(wyxStatistical, t);
+			wyxStatisticalService.saveOrUpdate(t);
 			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 		} catch (Exception e) {
 			e.printStackTrace();
-			message = "分享的图标更新失败";
+			message = "点击统计更新失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -226,30 +229,30 @@ public class WyxShareIconController extends BaseController {
 	
 
 	/**
-	 * 分享的图标新增页面跳转
+	 * 点击统计新增页面跳转
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "goAdd")
-	public ModelAndView goAdd(WyxShareIconEntity wyxShareIcon, HttpServletRequest req) {
-		if (StringUtil.isNotEmpty(wyxShareIcon.getId())) {
-			wyxShareIcon = wyxShareIconService.getEntity(WyxShareIconEntity.class, wyxShareIcon.getId());
-			req.setAttribute("wyxShareIconPage", wyxShareIcon);
+	public ModelAndView goAdd(WyxStatisticalEntity wyxStatistical, HttpServletRequest req) {
+		if (StringUtil.isNotEmpty(wyxStatistical.getId())) {
+			wyxStatistical = wyxStatisticalService.getEntity(WyxStatisticalEntity.class, wyxStatistical.getId());
+			req.setAttribute("wyxStatisticalPage", wyxStatistical);
 		}
-		return new ModelAndView("wyx/manager/wyxShareIcon-add");
+		return new ModelAndView("wyx/manager/wyxStatistical-add");
 	}
 	/**
-	 * 分享的图标编辑页面跳转
+	 * 点击统计编辑页面跳转
 	 * 
 	 * @return
 	 */
 	@RequestMapping(params = "goUpdate")
-	public ModelAndView goUpdate(WyxShareIconEntity wyxShareIcon, HttpServletRequest req) {
-		if (StringUtil.isNotEmpty(wyxShareIcon.getId())) {
-			wyxShareIcon = wyxShareIconService.getEntity(WyxShareIconEntity.class, wyxShareIcon.getId());
-			req.setAttribute("wyxShareIconPage", wyxShareIcon);
+	public ModelAndView goUpdate(WyxStatisticalEntity wyxStatistical, HttpServletRequest req) {
+		if (StringUtil.isNotEmpty(wyxStatistical.getId())) {
+			wyxStatistical = wyxStatisticalService.getEntity(WyxStatisticalEntity.class, wyxStatistical.getId());
+			req.setAttribute("wyxStatisticalPage", wyxStatistical);
 		}
-		return new ModelAndView("wyx/manager/wyxShareIcon-update");
+		return new ModelAndView("wyx/manager/wyxStatistical-update");
 	}
 	
 	/**
@@ -259,7 +262,7 @@ public class WyxShareIconController extends BaseController {
 	 */
 	@RequestMapping(params = "upload")
 	public ModelAndView upload(HttpServletRequest req) {
-		req.setAttribute("controller_name","wyxShareIconController");
+		req.setAttribute("controller_name","wyxStatisticalController");
 		return new ModelAndView("common/upload/pub_excel_upload");
 	}
 	
@@ -270,16 +273,16 @@ public class WyxShareIconController extends BaseController {
 	 * @param response
 	 */
 	@RequestMapping(params = "exportXls")
-	public String exportXls(WyxShareIconEntity wyxShareIcon,HttpServletRequest request,HttpServletResponse response
+	public String exportXls(WyxStatisticalEntity wyxStatistical,HttpServletRequest request,HttpServletResponse response
 			, DataGrid dataGrid,ModelMap modelMap) {
-		CriteriaQuery cq = new CriteriaQuery(WyxShareIconEntity.class, dataGrid);
-		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxShareIcon, request.getParameterMap());
-		List<WyxShareIconEntity> wyxShareIcons = this.wyxShareIconService.getListByCriteriaQuery(cq,false);
-		modelMap.put(NormalExcelConstants.FILE_NAME,"分享的图标");
-		modelMap.put(NormalExcelConstants.CLASS,WyxShareIconEntity.class);
-		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("分享的图标列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
+		CriteriaQuery cq = new CriteriaQuery(WyxStatisticalEntity.class, dataGrid);
+		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, wyxStatistical, request.getParameterMap());
+		List<WyxStatisticalEntity> wyxStatisticals = this.wyxStatisticalService.getListByCriteriaQuery(cq,false);
+		modelMap.put(NormalExcelConstants.FILE_NAME,"点击统计");
+		modelMap.put(NormalExcelConstants.CLASS,WyxStatisticalEntity.class);
+		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("点击统计列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
 			"导出信息"));
-		modelMap.put(NormalExcelConstants.DATA_LIST,wyxShareIcons);
+		modelMap.put(NormalExcelConstants.DATA_LIST,wyxStatisticals);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
 	/**
@@ -289,11 +292,11 @@ public class WyxShareIconController extends BaseController {
 	 * @param response
 	 */
 	@RequestMapping(params = "exportXlsByT")
-	public String exportXlsByT(WyxShareIconEntity wyxShareIcon,HttpServletRequest request,HttpServletResponse response
+	public String exportXlsByT(WyxStatisticalEntity wyxStatistical,HttpServletRequest request,HttpServletResponse response
 			, DataGrid dataGrid,ModelMap modelMap) {
-    	modelMap.put(NormalExcelConstants.FILE_NAME,"分享的图标");
-    	modelMap.put(NormalExcelConstants.CLASS,WyxShareIconEntity.class);
-    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("分享的图标列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
+    	modelMap.put(NormalExcelConstants.FILE_NAME,"点击统计");
+    	modelMap.put(NormalExcelConstants.CLASS,WyxStatisticalEntity.class);
+    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("点击统计列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
     	"导出信息"));
     	modelMap.put(NormalExcelConstants.DATA_LIST,new ArrayList());
     	return NormalExcelConstants.JEECG_EXCEL_VIEW;
@@ -314,9 +317,9 @@ public class WyxShareIconController extends BaseController {
 			params.setHeadRows(1);
 			params.setNeedSave(true);
 			try {
-				List<WyxShareIconEntity> listWyxShareIconEntitys = ExcelImportUtil.importExcel(file.getInputStream(),WyxShareIconEntity.class,params);
-				for (WyxShareIconEntity wyxShareIcon : listWyxShareIconEntitys) {
-					wyxShareIconService.save(wyxShareIcon);
+				List<WyxStatisticalEntity> listWyxStatisticalEntitys = ExcelImportUtil.importExcel(file.getInputStream(),WyxStatisticalEntity.class,params);
+				for (WyxStatisticalEntity wyxStatistical : listWyxStatisticalEntitys) {
+					wyxStatisticalService.save(wyxStatistical);
 				}
 				j.setMsg("文件导入成功！");
 			} catch (Exception e) {
@@ -335,15 +338,15 @@ public class WyxShareIconController extends BaseController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
-	public List<WyxShareIconEntity> list() {
-		List<WyxShareIconEntity> listWyxShareIcons=wyxShareIconService.getList(WyxShareIconEntity.class);
-		return listWyxShareIcons;
+	public List<WyxStatisticalEntity> list() {
+		List<WyxStatisticalEntity> listWyxStatisticals=wyxStatisticalService.getList(WyxStatisticalEntity.class);
+		return listWyxStatisticals;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> get(@PathVariable("id") String id) {
-		WyxShareIconEntity task = wyxShareIconService.get(WyxShareIconEntity.class, id);
+		WyxStatisticalEntity task = wyxStatisticalService.get(WyxStatisticalEntity.class, id);
 		if (task == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
@@ -352,23 +355,23 @@ public class WyxShareIconController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> create(@RequestBody WyxShareIconEntity wyxShareIcon, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> create(@RequestBody WyxStatisticalEntity wyxStatistical, UriComponentsBuilder uriBuilder) {
 		//调用JSR303 Bean Validator进行校验，如果出错返回含400错误码及json格式的错误信息.
-		Set<ConstraintViolation<WyxShareIconEntity>> failures = validator.validate(wyxShareIcon);
+		Set<ConstraintViolation<WyxStatisticalEntity>> failures = validator.validate(wyxStatistical);
 		if (!failures.isEmpty()) {
 			return new ResponseEntity(BeanValidators.extractPropertyAndMessage(failures), HttpStatus.BAD_REQUEST);
 		}
 
 		//保存
 		try{
-			wyxShareIconService.save(wyxShareIcon);
+			wyxStatisticalService.save(wyxStatistical);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		//按照Restful风格约定，创建指向新任务的url, 也可以直接返回id或对象.
-		Integer id = wyxShareIcon.getId();
-		URI uri = uriBuilder.path("/rest/wyxShareIconController/" + id).build().toUri();
+		Integer id = wyxStatistical.getId();
+		URI uri = uriBuilder.path("/rest/wyxStatisticalController/" + id).build().toUri();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(uri);
 
@@ -376,16 +379,16 @@ public class WyxShareIconController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> update(@RequestBody WyxShareIconEntity wyxShareIcon) {
+	public ResponseEntity<?> update(@RequestBody WyxStatisticalEntity wyxStatistical) {
 		//调用JSR303 Bean Validator进行校验，如果出错返回含400错误码及json格式的错误信息.
-		Set<ConstraintViolation<WyxShareIconEntity>> failures = validator.validate(wyxShareIcon);
+		Set<ConstraintViolation<WyxStatisticalEntity>> failures = validator.validate(wyxStatistical);
 		if (!failures.isEmpty()) {
 			return new ResponseEntity(BeanValidators.extractPropertyAndMessage(failures), HttpStatus.BAD_REQUEST);
 		}
 
 		//保存
 		try{
-			wyxShareIconService.saveOrUpdate(wyxShareIcon);
+			wyxStatisticalService.saveOrUpdate(wyxStatistical);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -398,6 +401,6 @@ public class WyxShareIconController extends BaseController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") String id) {
-		wyxShareIconService.deleteEntityById(WyxShareIconEntity.class, id);
+		wyxStatisticalService.deleteEntityById(WyxStatisticalEntity.class, id);
 	}
 }

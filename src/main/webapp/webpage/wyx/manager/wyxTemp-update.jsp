@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>分享的图标</title>
+  <title>模板表</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="online/template/ledefault/css/vendor.css">
@@ -31,56 +31,69 @@
   <script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
   <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.config.js"></script>
   <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.all.min.js"></script>
-								
    <script type="text/javascript">
   //编写自定义JS代码
   </script>
 </head>
 
  <body>
-	<t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="wyxShareIconController.do?doAdd" tiptype="1" >
+	<t:formvalid formid="formobj" dialog="true" usePlugin="password" layout="table" action="wyxTempController.do?doUpdate" tiptype="1" >
 			<input type="hidden" id="btn_sub" class="btn_sub"/>
-			<input type="hidden" id="id" name="id"/>
+			<input type="hidden" name="id" value='${wyxTempPage.id}' >
+			
+			
 			<div class="tab-wrapper">
 			    <!-- tab -->
 			    <ul class="nav nav-tabs">
-			      <li role="presentation" class="active"><a href="javascript:void(0);">分享的图标</a></li>
+			      <li role="presentation" class="active"><a href="javascript:void(0);">模板表</a></li>
 			    </ul>
 			    <!-- tab内容 -->
 			    <div class="con-wrapper" id="con-wrapper1" style="display: block;">
 			      <div class="row form-wrapper">
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>排序：</b>
+			          	<b>模板标题：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<input id="siOrder" name="siOrder" type="text" class="form-control"  datatype="n"  ignore="ignore" />
+								<input id="tTitle" name="tTitle" type="text" class="form-control" ignore="ignore"  value='${wyxTempPage.tTitle}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">排序</label>
+						<label class="Validform_label" style="display: none">模板标题</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>所在分类：</b>
+			          	<b>模板类型：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<t:dictSelect field="siType" type="list" extendJson="{class:'form-control'}"  datatype="*"   dictTable="wyx_share_type" dictField="id" dictText="st_name"  hasLabel="false"  title="所在分类"></t:dictSelect>     
+								<input id="tType" name="tType" type="text" class="form-control" datatype="n"  ignore="ignore"  value='${wyxTempPage.tType}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">所在分类</label>
+						<label class="Validform_label" style="display: none">模板类型</label>
 			          </div>
 						</div>
 			          
 			        
 							<div class="row show-grid">
 			          <div class="col-xs-3 text-center">
-			          	<b>图标路径：</b>
+			          	<b>缩略图：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<input id="siSrc" name="siSrc" type="text" class="form-control"  ignore="ignore" />
+								<input id="tIconSrc" name="tIconSrc" type="text" class="form-control" ignore="ignore"  value='${wyxTempPage.tIconSrc}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">图标路径</label>
+						<label class="Validform_label" style="display: none">缩略图</label>
+			          </div>
+						</div>
+			          
+			        
+							<div class="row show-grid">
+			          <div class="col-xs-3 text-center">
+			          	<b>提示图：</b>
+			          </div>
+			          <div class="col-xs-3">
+								<input id="tSrcarry" name="tSrcarry" type="text" class="form-control" ignore="ignore"  value='${wyxTempPage.tSrcarry}' />
+						<span class="Validform_checktip" style="float:left;height:0px;"></span>
+						<label class="Validform_label" style="display: none">提示图</label>
 			          </div>
 						</div>
 			          
@@ -90,15 +103,13 @@
 			          	<b>是否删除：</b>
 			          </div>
 			          <div class="col-xs-3">
-								<t:dictSelect field="siDelete" type="radio" extendJson="{class:'form-control'}"  datatype="*"   typeGroupCode="yesorno"  hasLabel="false"  title="是否删除"></t:dictSelect>     
+								<input id="tDelete" name="tDelete" type="text" class="form-control" datatype="n"  ignore="ignore"  value='${wyxTempPage.tDelete}' />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
 						<label class="Validform_label" style="display: none">是否删除</label>
 			          </div>
 						</div>
 			          
 			        
-			        
-			       
 			          <div class="row" id = "sub_tr" style="display: none;">
 				        <div class="col-xs-12 layout-header">
 				          <div class="col-xs-6"></div>
@@ -137,5 +148,5 @@
 
 </script>
  </body>
-<script src = "webpage/wyx/manager/wyxShareIcon.js"></script>		
+<script src = "webpage/wyx/manager/wyxTemp.js"></script>		
 </html>

@@ -100,7 +100,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 				return true;
 			}
 		}else{
-			
 			//JAuthority jauthMethod =handlerMethod.getMethodAnnotation(JAuthority.class);
 			JAuth jauthMethod =handlerMethod.getMethod().getAnnotation(JAuth.class);
 			if(jauthMethod!=null){
@@ -119,7 +118,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		//logger.info("-----authInterceptor----requestPath------"+requestPath);
 		//步骤一： 判断是否是排除拦截请求，直接返回TRUE
 		//update-begin--Author:dangzhenghui  Date:20170402 for：对外接口改造 api 设置为默认对外路径不用进行登陆验证
-		if (requestPath.length()>3&&"api/".equals(requestPath.substring(0,4))) {
+		if (requestPath.length()>3&& ("api/".equals(requestPath.substring(0,4)) || requestPath.indexOf("rest/api") ==0)) {
 			return true;
 		}
 		//update-begin--Author:end  Date:20170402 for：对外接口改造 api 设置为默认对外路径不用进行登陆验证
@@ -325,9 +324,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 	
 	/**
 	 * 转发
-	 * 
-	 * @param user
-	 * @param req
+	 *
 	 * @return
 	 */
 	@RequestMapping(params = "forword")
