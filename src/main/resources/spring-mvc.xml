@@ -153,4 +153,13 @@
 	-->
 	<!-- jeecg plugin dev -->
 	<import resource="classpath:config/spring-config-p3.xml" />
+
+	<bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles">
+			<list>
+				<value>classpath*:dozer-mapping.xml</value>
+			</list>
+		</property>
+	</bean>
+
 </beans>

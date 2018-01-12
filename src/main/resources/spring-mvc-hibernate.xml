@@ -15,6 +15,7 @@
 	<context:component-scan base-package="org.jeecgframework.core.common.dao.*" />
 	<context:component-scan base-package="org.jeecgframework.core.common.service.*" />
 	<context:component-scan base-package="wyx.manager.service.*" />
+	<context:component-scan base-package="wyx.manager.extend.*" />
 	<context:component-scan base-package="com.jeecg.*">
 			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
