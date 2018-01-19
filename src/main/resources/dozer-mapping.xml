@@ -7,10 +7,14 @@
     <mapping date-format="yyyy-MM-dd">
         <class-a>wyx.manager.entity.WyxShareIconEntity</class-a>
         <class-b>wyx.manager.vo.ShareIconVO</class-b>
-        <field>
-            <a>name</a>
-            <b>value</b>
-        </field>
+    </mapping>
+    <mapping>
+        <class-a>wyx.manager.entity.WyxStatisticalEntity</class-a>
+        <class-b>wyx.manager.vo.StatisticalVO</class-b>
+        <field-exclude>
+            <a>createDate</a>
+            <b>createDate</b>
+        </field-exclude>
     </mapping>
 
 </mappings>

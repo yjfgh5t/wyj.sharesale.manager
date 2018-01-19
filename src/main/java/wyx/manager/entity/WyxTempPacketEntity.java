@@ -31,7 +31,6 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @SuppressWarnings("serial")
 public class WyxTempPacketEntity implements java.io.Serializable {
 	/**主键*/
-
 	private Integer id;
 	/**口令*/
     @Excel(name="口令",width=15)
@@ -61,7 +60,7 @@ public class WyxTempPacketEntity implements java.io.Serializable {
 	 *@return: java.lang.Integer  主键
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name ="ID",nullable=false,length=20)
 	public Integer getId(){
 		return this.id;

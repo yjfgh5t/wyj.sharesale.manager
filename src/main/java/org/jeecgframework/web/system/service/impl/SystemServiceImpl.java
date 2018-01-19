@@ -69,6 +69,12 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * 添加日志
 	 */
 	public void addLog(String logcontent, Short loglevel, Short operatetype) {
+		TSUser u = ResourceUtil.getSessionUser();
+		if(u==null)
+		{
+			return;
+		}
+
 		HttpServletRequest request = ContextHolderUtils.getRequest();
 		String broswer = BrowserUtils.checkBrowse(request);
 		TSLog log = new TSLog();
@@ -84,7 +90,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		/* end dangzhenghui 201703016TASK #1784 【online bug】Online 表单保存的时候，报错*/
 //		log.setTSUser(ResourceUtil.getSessionUser());
 		/*start chenqian 201708031TASK #2317 【改造】系统日志表，增加两个字段，避免关联查询 [操作人账号] [操作人名字]*/
-		TSUser u = ResourceUtil.getSessionUser();
+
 		log.setUserid(u.getId());
 		log.setUsername(u.getUserName());
 		log.setRealname(u.getRealName());

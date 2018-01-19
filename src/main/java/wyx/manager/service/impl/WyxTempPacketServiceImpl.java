@@ -1,9 +1,12 @@
 package wyx.manager.service.impl;
+import org.springframework.beans.factory.annotation.Autowired;
 import wyx.manager.service.WyxTempPacketServiceI;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import wyx.manager.entity.WyxTempPacketEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +19,6 @@ import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
 @Service("wyxTempPacketService")
 @Transactional
 public class WyxTempPacketServiceImpl extends CommonServiceImpl implements WyxTempPacketServiceI {
-
 	
  	public void delete(WyxTempPacketEntity entity) throws Exception{
  		super.delete(entity);
@@ -25,9 +27,9 @@ public class WyxTempPacketServiceImpl extends CommonServiceImpl implements WyxTe
  	}
  	
  	public Serializable save(WyxTempPacketEntity entity) throws Exception{
+		//执行新增操作增强业务
+		this.doAddBus(entity);
  		Serializable t = super.save(entity);
- 		//执行新增操作增强业务
- 		this.doAddBus(entity);
  		return t;
  	}
  	
@@ -45,7 +47,8 @@ public class WyxTempPacketServiceImpl extends CommonServiceImpl implements WyxTe
 	private void doAddBus(WyxTempPacketEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+		t.setTpDelete(1);
+		t.setUpdateDate(new Date());
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}

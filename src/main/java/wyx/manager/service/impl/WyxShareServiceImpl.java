@@ -1,9 +1,13 @@
 package wyx.manager.service.impl;
+import org.springframework.beans.factory.annotation.Autowired;
+import wyx.manager.entity.WyxTempPacketEntity;
 import wyx.manager.service.WyxShareServiceI;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import wyx.manager.entity.WyxShareEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,11 +16,14 @@ import org.jeecgframework.core.util.ApplicationContextUtil;
 import org.jeecgframework.core.util.MyClassLoader;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
+import wyx.manager.service.WyxTempPacketServiceI;
 
 @Service("wyxShareService")
 @Transactional
 public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareServiceI {
 
+	@Autowired
+	WyxTempPacketServiceI wyxTempPacketService;
 	
  	public void delete(WyxShareEntity entity) throws Exception{
  		super.delete(entity);
@@ -25,9 +32,12 @@ public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareSe
  	}
  	
  	public Serializable save(WyxShareEntity entity) throws Exception{
+
+		//执行新增操作增强业务
+		this.doAddBus(entity);
+
  		Serializable t = super.save(entity);
- 		//执行新增操作增强业务
- 		this.doAddBus(entity);
+
  		return t;
  	}
  	
@@ -36,8 +46,20 @@ public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareSe
  		//执行更新操作增强业务
  		this.doUpdateBus(entity);
  	}
- 	
- 	/**
+
+	@Override
+	public void save(WyxShareEntity entity, WyxTempPacketEntity tempPacket) throws Exception{
+
+		//保存分享数据
+ 		Serializable id = save(entity);
+
+ 		//设置id相同
+		tempPacket.setId((Integer)id);
+		tempPacket.setCreateId(entity.getCreateId());
+		wyxTempPacketService.save(tempPacket);
+	}
+
+	/**
 	 * 新增操作增强业务
 	 * @param t
 	 * @return
@@ -45,7 +67,8 @@ public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareSe
 	private void doAddBus(WyxShareEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+		t.setTDelete(1);
+		t.setUpdateDate(new Date());
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
@@ -63,7 +86,7 @@ public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareSe
  	}
  	/**
 	 * 删除操作增强业务
-	 * @param id
+	 * @param
 	 * @return
 	 */
 	private void doDelBus(WyxShareEntity t) throws Exception{

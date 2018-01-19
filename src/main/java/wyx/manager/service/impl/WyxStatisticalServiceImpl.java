@@ -1,23 +1,32 @@
 package wyx.manager.service.impl;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import wyx.manager.common.LocalCache;
+import wyx.manager.extend.EMapper;
 import wyx.manager.service.WyxStatisticalServiceI;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import wyx.manager.entity.WyxStatisticalEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+
+import java.util.*;
 import java.io.Serializable;
 import org.jeecgframework.core.util.ApplicationContextUtil;
 import org.jeecgframework.core.util.MyClassLoader;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
+import wyx.manager.vo.StatisticalVO;
 
 @Service("wyxStatisticalService")
 @Transactional
 public class WyxStatisticalServiceImpl extends CommonServiceImpl implements WyxStatisticalServiceI {
 
-	
+	private static final Logger logger = Logger.getLogger(WyxStatisticalServiceImpl.class);
+
+	@Autowired
+	EMapper mapper;
+
  	public void delete(WyxStatisticalEntity entity) throws Exception{
  		super.delete(entity);
  		//执行删除操作增强业务
@@ -36,7 +45,111 @@ public class WyxStatisticalServiceImpl extends CommonServiceImpl implements WyxS
  		//执行更新操作增强业务
  		this.doUpdateBus(entity);
  	}
- 	
+
+	/**
+	 * 更新缓存数据
+	 */
+	public int updateCacheData(){
+
+		Map<String,StatisticalVO> listArray = LocalCache.findVal("key_share_");
+
+		//判断是否为空
+		if(listArray==null || listArray.size()==0){ return 0;}
+
+		logger.info("更新缓存数据总条数："+listArray.size());
+
+		//临时数据
+		WyxStatisticalEntity wyxStatisticalModel =null;
+		StatisticalVO item=null;
+
+		//数据转换
+		for(String key:listArray.keySet())
+		{
+			item = listArray.get(key);
+			wyxStatisticalModel = mapper.map(item,WyxStatisticalEntity.class);
+			wyxStatisticalModel.setCreateDate(item.getCreateDate().toDate());
+			try {
+				//保存数据
+				save(wyxStatisticalModel);
+				//删除缓存
+				LocalCache.remove(key);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return listArray.size();
+	}
+
+ 	//region 点击数
+
+	/**
+	 * 增加点击数
+	 * @param shareId
+	 */
+	public void addClickCount(int shareId)
+	{
+		//获取缓存Model
+		StatisticalVO statisModel = getCacheModel(shareId);
+
+		//增加查看数量
+		statisModel.setSClick(statisModel.getSClick()+1);
+
+		//更新缓存
+		updateCacheModel(statisModel);
+	}
+
+	/**
+	 * 增加查看数量
+	 * @param shareId
+	 */
+	public void addSeeCount(int shareId)
+	{
+		//获取缓存Model
+		StatisticalVO statisModel = getCacheModel(shareId);
+
+		statisModel.setSSee(statisModel.getSSee()+1);
+
+		//更新缓存
+		updateCacheModel(statisModel);
+	}
+
+	/**
+	 * 获取缓存中的数据
+	 * @param shareId
+	 * @return
+	 */
+	private StatisticalVO getCacheModel(int shareId){
+
+		DateTime time = new DateTime();
+
+		//点击次数统计
+		StatisticalVO statisModel = (StatisticalVO) LocalCache.get("key_share_"+time.toString("MM_HH_")+shareId);
+
+		if(statisModel==null)
+		{
+			statisModel = new StatisticalVO();
+			statisModel.setCreateDate(time);
+			statisModel.setSid(shareId);
+			statisModel.setSClick(0);
+			statisModel.setSSee(0);
+		}
+
+		return statisModel;
+	}
+
+	/**
+	 * 更新缓存
+	 * @param model
+	 */
+	private void updateCacheModel(StatisticalVO model){
+		LocalCache.add("key_share_"+model.getCreateDate().toString("MM_HH_")+model.getSid(),model);
+	}
+
+	//endregion
+
+
+ 	//region 私有方法
  	/**
 	 * 新增操作增强业务
 	 * @param t
@@ -125,4 +238,6 @@ public class WyxStatisticalServiceImpl extends CommonServiceImpl implements WyxS
 			} 
 		}
  	}
+
+ 	//endregion
 }

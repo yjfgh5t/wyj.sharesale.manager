@@ -1,9 +1,11 @@
 package wyx.manager.rest.controller;
 
+import org.dozer.Mapper;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import wyx.manager.entity.WyxShareIconEntity;
 import wyx.manager.extend.EMapper;
@@ -14,12 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-public class ShareIconController{
+public class ShareIconController extends BaseController{
 
     @Autowired
     WyxShareIconServiceI wyxShareIconService;
 
-    @Autowired(required = false)
+    @Autowired
     EMapper mapper;
 
     /**
