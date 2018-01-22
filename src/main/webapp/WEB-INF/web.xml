@@ -24,6 +24,21 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
+
+	<!--跨域过滤处理-->
+	<filter>
+		<filter-name>corsFilter</filter-name>
+		<filter-class>wyx.manager.common.CORSFilter</filter-class>
+		<init-param>
+			<param-name>origin</param-name>
+			<param-value>http://test.com:7011</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>corsFilter</filter-name>
+		<url-pattern>/rest/*</url-pattern>
+	</filter-mapping>
+
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
