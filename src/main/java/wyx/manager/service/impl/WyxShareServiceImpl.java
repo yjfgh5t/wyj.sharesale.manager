@@ -48,7 +48,7 @@ public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareSe
  	}
 
 	@Override
-	public void save(WyxShareEntity entity, WyxTempPacketEntity tempPacket) throws Exception{
+	public Integer save(WyxShareEntity entity, WyxTempPacketEntity tempPacket) throws Exception{
 
 		//保存分享数据
  		Serializable id = save(entity);
@@ -57,6 +57,8 @@ public class WyxShareServiceImpl extends CommonServiceImpl implements WyxShareSe
 		tempPacket.setId((Integer)id);
 		tempPacket.setCreateId(entity.getCreateId());
 		wyxTempPacketService.save(tempPacket);
+
+		return tempPacket.getId();
 	}
 
 	/**

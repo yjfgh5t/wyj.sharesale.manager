@@ -42,10 +42,10 @@ public class ShareController extends BaseController{
      * @return
      */
     @RequestMapping(value = "",method = RequestMethod.POST)
-    public boolean SaveShare(@RequestBody ShareVO model) throws Exception {
+    public Integer SaveShare(@RequestBody ShareVO model) throws Exception {
         if(model==null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
-            return false;
+            return 0;
         }
         //数据转换
         WyxShareEntity shareModel = mapper.map(model,WyxShareEntity.class);
@@ -53,9 +53,7 @@ public class ShareController extends BaseController{
         WyxTempPacketEntity tempPacket = mapper.map(model,WyxTempPacketEntity.class);
 
         //分享数据
-        wyxShareService.save(shareModel,tempPacket);
-
-        return true;
+        return wyxShareService.save(shareModel,tempPacket);
     }
 
     /**

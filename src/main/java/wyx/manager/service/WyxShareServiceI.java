@@ -13,6 +13,6 @@ public interface WyxShareServiceI extends CommonService{
  	
  	public void saveOrUpdate(WyxShareEntity entity) throws Exception;
 
- 	void save(WyxShareEntity entity ,WyxTempPacketEntity tempPacket) throws Exception;
+	Integer save(WyxShareEntity entity ,WyxTempPacketEntity tempPacket) throws Exception;
  	
 }
